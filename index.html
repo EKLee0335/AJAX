@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=~, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.5.1.js" 
+    integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+    crossorigin="anonymous"></script>
+</head>
+<body>
+    <h1>高雄市電動機車充電站名稱及充電站地址一覽表</h1>
+    <ul class="charge-list"></ul>
+    <div>
+
+    </div>
+    <script>
+        const url = 'https://data.kcg.gov.tw/dataset/a98754a3-3446-4c9a-abfc-58dc49f2158c/resource/48d4dfc4-a4b2-44a5-bdec-70f9558cd25d/download/yopendata1070622opendatajson-1070622.json';
+        $.ajax({
+            type: 'GET',
+            url: url,
+            dataType: 'json',
+            success: function(response){
+                const charge = [];
+                console.log(charge)
+                charge.push(...response);
+                createDomElement(charge)
+            },
+            error: function(){
+                console.log('error');
+            }
+        });
+        
+        function createDomElement(charge) {
+            const domElements = charge.map(find = (data) => {
+                return `
+                        <li>
+                        <p class="location">位置： ${ data.Location }</p>
+                        <p class="address">地址：${ data.Address }</p>
+                        </li>
+                    `;
+            }).join('');
+            // console.log(domElements)
+            // const chargeList = document.querySelector('.charge-list');
+            const chargeList = $('.charge-list');
+            chargeList.append(domElements) ;
+    }
+    </script>
+</body>
+</html>
